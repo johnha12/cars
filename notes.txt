@@ -1,0 +1,130 @@
+managing multiple slices w/ redux toolkit
+
+dependancies
+- npm install 
+- npm install @reduxjs/toolkit react-redux bulma
+
+run program
+- npm start
+
+project overview
+- form, track vehicles they own 
+- once entered, input is cleared out and shown in the list 
+- delete is available, total value is tracked 
+- search bar for vehicles, total is changed 
+- will show partial match to help user know what is already existed 
+
+adding component boilerplate 
+- added boilerplate
+- design: CarForm, CarSearch, CarList, CarValue 
+
+thinking the derived state 
+- think about redux side, slices to create 
+- redux store design
+  1. identify what state exist in app
+  2. identify how state change over time 
+  3. group together common pieces of state 
+  4. create slice for each group 
+- name: string, cost: number, searchTerm: string, cars: array {id, name, cost}
+- total cost: number, partial match/bold. <= discuss later. not really need state for 
+  - derived state. calculate w/ state already have 
+  - matchedCars: name and cars 
+
+thinking about redux design 
+- change name, change cost, change searchTerm, add car, delete car
+- state related to adding cars, state related to list of cars 
+  - 2 slices 
+  - assign ways to change state into the slices 
+
+adding the form slice 
+- when changing state, need to know name or cost. so assume that action will tell us 
+- reducers in slice, but export 1 combine reducer 
+
+maintaining a collection w/ a slice 
+- can be tricky to add/remove car. 
+  - carSlice needs to access formSlice 
+  - assume action payload is an object that contain everything we need
+- when dispatch action. make sure we have correct payload 
+- later have id property so we can identify identical cars 
+- use nanoid to generate random number 
+
+creating the store
+- import everything to the store. then store is central location to export 
+- once per project, import provider 
+- next work on react side. jsx, dispatch action, access state...
+
+form values to update state
+- want car form to have 2 text input and submit button 
+- for input element: want to take value of user type, then dispatch action when submitted
+- go through flow to change state, when user types input 
+  - then access state 
+- need to change state and access state
+- lots of code for a form. but harder stuff is easier now 
+- useSelector and state.name.value 
+
+receiving the cost 
+- input that accepts number, change state, access state 
+- next handle form submission and track name and cost 
+
+dispatching during form submission
+- change state and dispatch action object 
+- want to addCar and dispatch action to create it 
+- soon will include bulma styling, and adding car record 
+
+awkward double keys
+- we'll verify cars are added by printing out CarList
+- want CarList to access redux store 
+- some awkward code for redux toolkit: state.cars.cars
+- big state object in store 
+- initial state has searchTerm and cars property
+  - so big state object, access cars property (which has an object w/ cars array)
+- weird ways to access nested properties 
+- not really a bug. can chane name of property or carsSlice to avoid confusion 
+
+listing the records
+- 
+
+deleting records 
+- need car.id 
+
+adding styling
+- used bulma
+
+form reset on submission
+- can call multiple dispatch on event handler. but preferable not 
+- use extra reducers
+
+reminder on extra reducers
+- going to add extra code to reducers to look for an addCar action. 
+
+adding a search input 
+- piece of state that keep track of user type 
+- need to update state and access state from store
+
+derived state in useSelector
+- data and searchTerm => derived state 
+- write filtering logic in useSelector
+
+total car cost 
+- look at total cost of filtered cars
+
+highlighting existing cars
+- help user see that they might be adding a duplicate.
+- highlight matches 
+- useSelector needs to return list of cars and current name in form 
+- Q: className={`panel ${bold && 'bold'}`}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
